@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: #0b0820;
+  color: #ece9ff;
+}
+
+.bg-aurora {
+  background:
+    radial-gradient(60rem 40rem at 10% -10%, rgba(217, 70, 239, 0.35), transparent 60%),
+    radial-gradient(50rem 35rem at 95% 10%, rgba(14, 165, 233, 0.30), transparent 60%),
+    radial-gradient(45rem 35rem at 50% 110%, rgba(250, 204, 21, 0.18), transparent 60%),
+    #0b0820;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(12px);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #f0abfc, #fdba74, #fde047, #86efac, #67e8f9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes flow { to { stroke-dashoffset: -24; } }
+.flow-line { stroke-dasharray: 6 6; animation: flow 0.8s linear infinite; }
+
+@keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.45); } 100% { box-shadow: 0 0 0 14px rgba(255,255,255,0); } }
+.pulse-ring { animation: pulse-ring 1.2s ease-out infinite; }
+
+.prose-chat h1, .prose-chat h2, .prose-chat h3 { font-family: var(--font-display); font-weight: 700; margin: 1rem 0 0.4rem; color: #fde68a; }
+.prose-chat h3 { font-size: 1.02rem; }
+.prose-chat p { margin: 0.4rem 0; line-height: 1.6; }
+.prose-chat ul, .prose-chat ol { margin: 0.4rem 0 0.4rem 1.25rem; }
+.prose-chat ul { list-style: disc; }
+.prose-chat ol { list-style: decimal; }
+.prose-chat li { margin: 0.15rem 0; }
+.prose-chat strong { color: #f9a8d4; }
+.prose-chat code { background: rgba(255,255,255,0.1); padding: 0.1rem 0.35rem; border-radius: 0.3rem; font-size: 0.85em; }
+.prose-chat pre { background: rgba(0,0,0,0.4); padding: 0.75rem; border-radius: 0.6rem; overflow-x: auto; margin: 0.5rem 0; }
+.prose-chat pre code { background: none; padding: 0; }
+.prose-chat table { border-collapse: collapse; margin: 0.5rem 0; font-size: 0.85rem; display: block; overflow-x: auto; }
+.prose-chat th, .prose-chat td { border: 1px solid rgba(255,255,255,0.15); padding: 0.3rem 0.5rem; }
