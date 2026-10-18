@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { TOPICS, type Topic } from "@/lib/knowledge";
+import { useGroqKey } from "./KeyProvider";
 import { Section } from "./Section";
 
 type Msg = { role: "user" | "assistant"; content: string; topic?: Topic; usage?: { router?: number; answer?: number } };
@@ -33,31 +34,20 @@ export function Assistant() {
   const [busy, setBusy] = useState(false);
   const [steps, setSteps] = useState<StepState[]>(idle);
   const [error, setError] = useState("");
-  const [key, setKey] = useState("");
-  const [serverKey, setServerKey] = useState<boolean | null>(null);
+  const { apiKey: key, openGate } = useGroqKey();
   const scroller = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    fetch("/api/chat").then((r) => r.json()).then((d) => setServerKey(Boolean(d.hasServerKey))).catch(() => setServerKey(false));
-    try {
-      setKey(localStorage.getItem("groq-key") || "");
-    } catch {}
-  }, []);
 
   useEffect(() => {
     scroller.current?.scrollTo({ top: scroller.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
 
-  const saveKey = (v: string) => {
-    setKey(v);
-    try {
-      localStorage.setItem("groq-key", v);
-    } catch {}
-  };
-
   async function ask(question: string) {
     const q = question.trim();
     if (!q || busy) return;
+    if (!key) {
+      openGate();
+      return;
+    }
     setError("");
     setInput("");
     setBusy(true);
@@ -148,21 +138,13 @@ export function Assistant() {
             })}
           </ol>
 
-          <div className="mt-2 border-t border-white/10 pt-4">
-            {serverKey ? (
-              <div className="text-xs text-emerald-300">✓ Groq key loaded from the server (.env.local)</div>
+          <div className="mt-2 border-t border-white/10 pt-4 text-xs">
+            {key ? (
+              <div className="text-emerald-300">✓ Using your Groq key (…{key.slice(-4)}) for this tab only</div>
             ) : (
-              <label className="block text-xs">
-                <span className="text-white/60">Groq API key {serverKey === false && "(none on the server, so paste one here)"}</span>
-                <input
-                  type="password"
-                  value={key}
-                  onChange={(e) => saveKey(e.target.value)}
-                  placeholder="gsk_…"
-                  className="mt-1 w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 font-mono text-xs outline-none focus:border-yellow-300"
-                />
-                <span className="mt-1 block text-white/40">Saved only in this browser and sent only to this app&apos;s API route.</span>
-              </label>
+              <button onClick={openGate} className="w-full rounded-lg bg-gradient-to-r from-yellow-400 to-pink-500 px-3 py-2 font-bold text-white">
+                🔑 Add your Groq key to start
+              </button>
             )}
           </div>
         </div>

@@ -49,17 +49,11 @@ async function routeQuestion(apiKey: string, question: string) {
   return { topic, confidence, usage: data.usage as Usage, ms: Date.now() - started };
 }
 
-export async function GET() {
-  return Response.json({ hasServerKey: Boolean(process.env.GROQ_API_KEY) });
-}
-
 export async function POST(req: Request) {
-  const apiKey = process.env.GROQ_API_KEY || req.headers.get("x-groq-key") || "";
+  // Bring-your-own-key: the browser sends the visitor's Groq key with each request; nothing is stored server-side.
+  const apiKey = req.headers.get("x-groq-key")?.trim() || "";
   if (!apiKey) {
-    return Response.json(
-      { error: "No Groq API key. Add GROQ_API_KEY to .env.local or paste a key in the assistant panel." },
-      { status: 400 },
-    );
+    return Response.json({ error: "No Groq API key. Click “Add Groq key” at the top of the page." }, { status: 401 });
   }
 
   const { messages } = (await req.json()) as { messages: ChatMessage[] };

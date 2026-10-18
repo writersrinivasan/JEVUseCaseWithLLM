@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { KeyChip } from "./KeyProvider";
 import { STEPS } from "./Section";
 
 export function Nav() {
@@ -41,6 +42,9 @@ export function Nav() {
               {s.label}
             </a>
           ))}
+        </div>
+        <div className="ml-auto pl-2">
+          <KeyChip />
         </div>
       </div>
     </nav>

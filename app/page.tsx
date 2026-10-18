@@ -1,6 +1,7 @@
 import { Assistant } from "@/components/Assistant";
 import { Comparison } from "@/components/Comparison";
 import { Hero } from "@/components/Hero";
+import { KeyProvider } from "@/components/KeyProvider";
 import { Nav } from "@/components/Nav";
 import { Patterns } from "@/components/Patterns";
 import { TokenCalculator } from "@/components/TokenCalculator";
@@ -11,7 +12,7 @@ import { SOURCES } from "@/lib/knowledge";
 
 export default function Home() {
   return (
-    <>
+    <KeyProvider>
       <Nav />
       <main className="mx-auto max-w-6xl px-4">
         <Hero />
@@ -40,6 +41,6 @@ export default function Home() {
           </p>
         </div>
       </footer>
-    </>
+    </KeyProvider>
   );
 }

@@ -8,11 +8,22 @@ AI assistant that shows each processing step as it runs.
 
 ```bash
 npm install
-cp .env.example .env.local   # then paste your GROQ_API_KEY
 npm run dev                   # http://localhost:3000
 ```
 
-No key in `.env.local`? You can paste one into the assistant panel instead. It is stored in your browser and sent only to this app's API route.
+## Groq API key: bring your own, per session
+The app stores **no** API key. When you open it, a screen asks for your Groq key
+([get one free](https://console.groq.com/keys)). The app checks the key with Groq, then keeps it **only in that
+browser tab's `sessionStorage`**. It is sent with each assistant request and is gone when you close the tab.
+Use **"Forget key"** in the top bar to remove it sooner. You can also choose "Browse without the assistant".
+
+This keeps you in control of your Groq free-tier usage: nobody can spend your tokens unless they have your key.
+
+## Deploy to Vercel
+1. Go to [vercel.com/new](https://vercel.com/new) and import `writersrinivasan/JEVUseCaseWithLLM`.
+2. Framework preset: **Next.js**. Keep the default build settings.
+3. **Don't add `GROQ_API_KEY`.** Environment variables are optional: only `GROQ_ANSWER_MODEL` / `GROQ_ROUTER_MODEL` if you want different models.
+4. Deploy. Vercel redeploys automatically on every push to `main`.
 
 ## The 7 steps on the page
 1. What JEV is: typed questions in, typed decisions + confidence out, in one parallel pass
